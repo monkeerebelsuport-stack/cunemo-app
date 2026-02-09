@@ -219,6 +219,8 @@ export default function Register() {
                 return;
             }
 
+            console.error("Error crítico en registro:", err);
+
             if (err instanceof Error) {
                 setError(err.message);
             } else if (typeof err === "object" && err !== null && "message" in err) {
@@ -281,6 +283,7 @@ export default function Register() {
                                         <input
                                             name="password"
                                             type="password"
+                                            autoComplete="new-password"
                                             value={formData.password}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00AEEF] focus:border-transparent transition-all outline-none"
@@ -292,6 +295,7 @@ export default function Register() {
                                         <input
                                             name="confirmPassword"
                                             type="password"
+                                            autoComplete="new-password"
                                             value={formData.confirmPassword}
                                             onChange={handleChange}
                                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00AEEF] focus:border-transparent transition-all outline-none"
