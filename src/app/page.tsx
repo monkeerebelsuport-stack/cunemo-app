@@ -11,6 +11,7 @@ export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAuthErrorModal, setShowAuthErrorModal] = useState(false);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ export default function Home() {
       router.push("/dashboard");
     } catch (err) {
       console.error("Error de login:", err);
+      setShowAuthErrorModal(true);
       setError("Credenciales inválidas. Por favor verifica tu correo y contraseña.");
     } finally {
       setLoading(false);
@@ -133,6 +135,39 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* Modal: Error de Autenticación Profesional */}
+      {showAuthErrorModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center animate-scaleIn">
+            <div className="w-20 h-20 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Error de Acceso</h2>
+            <p className="text-gray-600 mb-8">
+              Las credenciales ingresadas no son correctas. Por favor, verifica tu correo y contraseña e intenta de nuevo.
+            </p>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => setShowAuthErrorModal(false)}
+                className="block w-full p-4 bg-[#004A8D] text-white rounded-xl font-bold hover:bg-[#003a6e] transition-all shadow-lg shadow-blue-900/20"
+              >
+                Reintentar
+              </button>
+              <Link
+                href="/register"
+                className="block w-full p-4 text-[#00AEEF] hover:text-[#008ec3] font-medium transition-colors"
+              >
+                ¿No tienes cuenta? Regístrate
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

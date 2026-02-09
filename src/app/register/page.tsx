@@ -178,7 +178,8 @@ export default function Register() {
             console.error("Error:", err);
 
             // Interceptar error de usuario ya registrado
-            if (err?.message?.includes("already registered") || err?.message?.includes("already exists")) {
+            const errorMsg = err?.message?.toLowerCase() || "";
+            if (errorMsg.includes("already registered") || errorMsg.includes("already exists") || err?.status === 422) {
                 setShowUserExistsModal(true);
                 return;
             }
