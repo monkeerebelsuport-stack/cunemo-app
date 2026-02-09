@@ -6,11 +6,13 @@ import FirstDealStep from "./steps/FirstDealStep";
 import ContactSeedStep from "./steps/ContactSeedStep"; // Importado correctamente
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
-import { saveOnboardingData } from "@/lib/actions/onboarding"; // Importaremos esto luego
+import { saveOnboardingData } from "@/lib/actions/onboarding";
+import AIConsultantChat from "./AIConsultantChat";
 
 export default function OnboardingWizard() {
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(0); // Empezamos en 0 (AI Chat)
     const [loading, setLoading] = useState(false);
+    const [showAIChat, setShowAIChat] = useState(true);
 
     // Estado único para todo el wizard
     const [formData, setFormData] = useState({
@@ -50,6 +52,16 @@ export default function OnboardingWizard() {
 
     const updateData = (data: Partial<typeof formData>) => {
         setFormData(prev => ({ ...prev, ...data }));
+    };
+
+    const handleAIComplete = (aiData: any) => {
+        setFormData(prev => ({
+            ...prev,
+            industry: aiData.industry || prev.industry,
+            // Podríamos mapear más datos aquí
+        }));
+        setCurrentStep(1);
+        setShowAIChat(false);
     };
 
     return (
@@ -92,7 +104,7 @@ export default function OnboardingWizard() {
             </div>
 
             {/* Step Content Card */}
-            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-gray-100 animate-fadeIn relative">
+            <div className={`w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-gray-100 animate-fadeIn relative overflow-hidden ${currentStep === 0 ? "p-0" : "p-8"}`}>
                 {loading && (
                     <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center rounded-2xl">
                         <div className="flex flex-col items-center gap-3">
@@ -100,6 +112,10 @@ export default function OnboardingWizard() {
                             <p className="text-[#004A8D] font-bold">Configurando tu CRM...</p>
                         </div>
                     </div>
+                )}
+
+                {currentStep === 0 && (
+                    <AIConsultantChat onComplete={handleAIComplete} />
                 )}
 
                 {currentStep === 1 && (
