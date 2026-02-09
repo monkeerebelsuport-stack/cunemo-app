@@ -220,9 +220,11 @@ export default function Register() {
             }
 
             if (err instanceof Error) {
-                setError(err.message || "Error al crear la cuenta");
+                setError(err.message);
+            } else if (typeof err === "object" && err !== null && "message" in err) {
+                setError((err as any).message);
             } else {
-                setError("Error al crear la cuenta");
+                setError("Error desconocido al crear la cuenta");
             }
         } finally {
             setLoading(false);
