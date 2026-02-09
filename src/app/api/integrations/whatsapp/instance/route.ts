@@ -2,16 +2,22 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// Inicializar cliente de servicio de Supabase para bypass RLS solo en creación controlada
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Inicializar cliente de servicio de Supabase (Bypass RLS para gestión de integraciones)
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+const supabaseAdmin = serviceKey && supabaseUrl
+    ? createClient(supabaseUrl, serviceKey)
+    : null;
 
 export async function POST(request: Request) {
     try {
-        // En un entorno real, aquí validaríamos la sesión del usuario
-        // Por ahora simulamos la creación de una instancia externa
+        if (!supabaseAdmin) {
+            return NextResponse.json({
+                error: 'Servidor no configurado. Falta SUPABASE_SERVICE_ROLE_KEY en .env.local',
+                status: 'missing_env'
+            }, { status: 500 });
+        }
 
         const body = await request.json();
         const { userId } = body;
