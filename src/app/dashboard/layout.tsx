@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 import { ReactNode } from "react";
 import Sidebar from "@/components/layout/Sidebar";
@@ -9,20 +10,43 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+    const router = useRouter();
     const [userData, setUserData] = useState<{ name: string, avatar?: string } | null>(null);
+    const [checking, setChecking] = useState(true);
 
     useEffect(() => {
         async function getUser() {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    router.push("/");
+                    return;
+                }
                 setUserData({
                     name: user.user_metadata?.full_name || "Usuario",
                     avatar: user.user_metadata?.avatar_url
                 });
+            } catch (error) {
+                router.push("/");
+            } finally {
+                setChecking(false);
             }
         }
         getUser();
-    }, []);
+    }, [router]);
+
+    if (checking) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-4 border-[#00AEEF] border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-[#004A8D] font-medium text-sm">Verificando acceso...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (!userData) return null; // Prevenir renderizado de dashboard si no hay usuario
 
     const initials = userData?.name
         ? userData.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)
