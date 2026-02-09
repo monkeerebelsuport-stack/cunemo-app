@@ -4,12 +4,21 @@ export const dynamic = 'force-dynamic';
 import Link from "next/link";
 import { ArrowRight, Users, DollarSign, Calendar } from "lucide-react";
 import { useDashboardStats } from "@/hooks/useDashboardStats";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function DashboardPage() {
     const { activeDeals, pipelineValue, totalContacts, pendingTasks, fetchStats, loading } = useDashboardStats();
+    const [userName, setUserName] = useState("Usuario");
 
     useEffect(() => {
+        async function loadProfile() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user?.user_metadata?.full_name) {
+                setUserName(user.user_metadata.full_name.split(' ')[0]);
+            }
+        }
+        loadProfile();
         fetchStats();
     }, [fetchStats]);
 
@@ -19,7 +28,7 @@ export default function DashboardPage() {
             <div className="bg-gradient-to-r from-[#004A8D] to-[#00AEEF] rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
                 <div className="relative z-10">
                     <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                        ¡Hola, Usuario! 👋
+                        ¡Hola, {userName}! 👋
                     </h1>
                     <p className="opacity-90 max-w-xl">
                         Aquí tienes el pulso de tu negocio hoy. Tienes <b>{pendingTasks} tareas</b> pendientes y <b>${pipelineValue.toLocaleString()}</b> en oportunidades activas.

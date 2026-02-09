@@ -179,7 +179,11 @@ export default function Register() {
             // 2. Company: Crear registro en accounts
             const { data: accountData, error: accountError } = await supabase
                 .from("accounts")
-                .insert([{ name: formData.company, phone: formData.phone }])
+                .insert([{
+                    name: formData.company,
+                    phone: formData.phone,
+                    user_id: authData.user.id // Blindaje: Vínculo explícito
+                }])
                 .select()
                 .single();
 
@@ -193,6 +197,7 @@ export default function Register() {
             const { error: contactError } = await supabase.from("contacts").insert([
                 {
                     account_id: accountData.id,
+                    user_id: authData.user.id, // Blindaje: Vínculo explícito
                     first_name: firstName,
                     last_name: lastName,
                     email: formData.email,

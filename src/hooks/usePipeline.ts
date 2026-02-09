@@ -33,20 +33,25 @@ export const usePipeline = create<PipelineStore>((set, get) => ({
     fetchDeals: async () => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { data: deals, error } = await supabase
                 .from("deals")
                 .select(`
-          id,
-          name,
-          value,
-          stage,
-          probability,
-          expected_close_date,
-          created_at,
-          accounts ( name ),
-          contacts ( email ),
-          activities ( created_at )
-        `);
+                  id,
+                  name,
+                  value,
+                  stage,
+                  probability,
+                  expected_close_date,
+                  created_at,
+                  accounts ( name ),
+                  contacts ( email ),
+                  activities ( created_at )
+                `)
+                .eq('user_id', userId);
 
             if (error) throw error;
 
@@ -103,9 +108,13 @@ export const usePipeline = create<PipelineStore>((set, get) => ({
     addDeal: async (dealData) => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { error } = await supabase
                 .from("deals")
-                .insert([dealData]);
+                .insert([{ ...dealData, user_id: userId }]);
 
             if (error) throw error;
 

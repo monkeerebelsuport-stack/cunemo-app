@@ -29,6 +29,10 @@ export const useDeal = create<DealDetailState>((set) => ({
     fetchDeal: async (id: string) => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { data, error } = await supabase
                 .from("deals")
                 .select(`
@@ -49,6 +53,7 @@ export const useDeal = create<DealDetailState>((set) => ({
                     )
                 `)
                 .eq("id", id)
+                .eq("user_id", userId)
                 .single();
 
             if (error) throw error;
@@ -87,11 +92,16 @@ export const useDeal = create<DealDetailState>((set) => ({
     },
     addActivity: async (activityData: { deal_id: string; type: string; subject: string; notes?: string }) => {
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             // 1. Insert into DB
             const { data, error } = await supabase
                 .from("activities")
                 .insert([{
                     ...activityData,
+                    user_id: userId, // Blindaje
                     created_at: new Date().toISOString() // Client-side timestamp for immediate feel, DB handles true time
                 }])
                 .select()
@@ -120,10 +130,15 @@ export const useDeal = create<DealDetailState>((set) => ({
     },
     updateDeal: async (id: string, updates: DealUpdateDTO) => {
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { error } = await supabase
                 .from("deals")
                 .update(updates)
-                .eq("id", id);
+                .eq("id", id)
+                .eq("user_id", userId);
 
             if (error) throw error;
 

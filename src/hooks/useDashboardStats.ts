@@ -26,11 +26,16 @@ export const useDashboardStats = create<DashboardStore>((set) => ({
         try {
             set({ loading: true });
 
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             // 1. Fetch Deals Stats
             const { data: deals, error: dealsError } = await supabase
                 .from('deals')
                 .select('value, stage')
-                .not('stage', 'in', '("CLOSED","LOST","WON")');
+                .eq('user_id', userId)
+                .not('stage', 'in', '(CLOSED,LOST,WON)'); // Corregido: Sin comillas extras adentro
 
             if (dealsError) throw dealsError;
 
@@ -40,7 +45,8 @@ export const useDashboardStats = create<DashboardStore>((set) => ({
             // 2. Fetch Contacts Count
             const { count: contactsCount, error: contactsError } = await supabase
                 .from('contacts')
-                .select('*', { count: 'exact', head: true });
+                .select('*', { count: 'exact', head: true })
+                .eq('user_id', userId);
 
             if (contactsError) throw contactsError;
 
@@ -48,6 +54,7 @@ export const useDashboardStats = create<DashboardStore>((set) => ({
             const { count: tasksCount, error: tasksError } = await supabase
                 .from('activities')
                 .select('*', { count: 'exact', head: true })
+                .eq('user_id', userId)
                 .eq('type', 'task')
                 .is('completed_at', null);
 

@@ -28,6 +28,10 @@ export const useContacts = create<ContactsStore>((set, get) => ({
     fetchContacts: async () => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { data, error } = await supabase
                 .from("contacts")
                 .select(`
@@ -40,6 +44,7 @@ export const useContacts = create<ContactsStore>((set, get) => ({
                     created_at,
                     accounts ( name )
                 `)
+                .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
@@ -63,9 +68,13 @@ export const useContacts = create<ContactsStore>((set, get) => ({
     addContact: async (contactData) => {
         set({ loading: true });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { error } = await supabase
                 .from("contacts")
-                .insert([contactData]);
+                .insert([{ ...contactData, user_id: userId }]);
 
             if (error) throw error;
             await get().fetchContacts();

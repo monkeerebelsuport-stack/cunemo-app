@@ -29,6 +29,10 @@ export const useActivities = create<ActivitiesStore>((set, get) => ({
     fetchActivities: async () => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { data, error } = await supabase
                 .from("activities")
                 .select(`
@@ -42,6 +46,7 @@ export const useActivities = create<ActivitiesStore>((set, get) => ({
                     deals ( name ),
                     contacts ( first_name, last_name )
                 `)
+                .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
@@ -66,10 +71,15 @@ export const useActivities = create<ActivitiesStore>((set, get) => ({
 
     toggleTaskCompletion: async (id, isCompleted) => {
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { error } = await supabase
                 .from("activities")
                 .update({ completed_at: isCompleted ? new Date().toISOString() : null })
-                .eq("id", id);
+                .eq("id", id)
+                .eq("user_id", userId);
 
             if (error) throw error;
             await get().fetchActivities();

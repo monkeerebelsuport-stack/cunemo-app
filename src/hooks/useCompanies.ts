@@ -26,9 +26,14 @@ export const useCompanies = create<CompaniesStore>((set, get) => ({
     fetchCompanies: async () => {
         set({ loading: true, error: null });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { data, error } = await supabase
                 .from("accounts")
-                .select("id, name, website, created_at") // Start with known/likely fields
+                .select("id, name, website, created_at")
+                .eq('user_id', userId)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
@@ -43,9 +48,13 @@ export const useCompanies = create<CompaniesStore>((set, get) => ({
     addCompany: async (companyData) => {
         set({ loading: true });
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No authenticated user");
+            const userId = user.id;
+
             const { error } = await supabase
                 .from("accounts")
-                .insert([companyData]);
+                .insert([{ ...companyData, user_id: userId }]);
 
             if (error) throw error;
             await get().fetchCompanies();
