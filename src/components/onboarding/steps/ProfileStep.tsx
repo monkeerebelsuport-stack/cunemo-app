@@ -86,6 +86,9 @@ export default function ProfileStep({ data, updateData, onNext }: ProfileStepPro
                             { code: "PEN", label: "PEN (Perú)" },
                             { code: "VES", label: "VES (Ven)" },
                             { code: "HNL", label: "HNL (Hon)" },
+                            { code: "BRL", label: "BRL (Brasil)" },
+                            { code: "PAB", label: "PAB (Panamá)" },
+                            { code: "CRC", label: "CRC (C. Rica)" },
                             { code: "EUR", label: "EUR (Europa)" },
                         ].map((curr) => (
                             <button
