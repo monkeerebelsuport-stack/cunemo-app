@@ -24,6 +24,36 @@ export default function Register() {
     const [error, setError] = useState<string | null>(null);
     const [showUserExistsModal, setShowUserExistsModal] = useState(false);
 
+    const getPasswordStrength = (password: string) => {
+        if (!password) return 0;
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/[0-9]/.test(password)) score++;
+        if (/[^A-Za-z0-9]/.test(password)) score++;
+        return score;
+    };
+
+    const strength = getPasswordStrength(formData.password);
+
+    const getStrengthColor = (s: number) => {
+        if (s <= 1) return "#EF4444"; // Red
+        if (s === 2) return "#F97316"; // Orange
+        if (s === 3) return "#EAB308"; // Yellow
+        if (s === 4) return "#00AEEF"; // Blue
+        return "#8DC63F"; // Green
+    };
+
+    const getStrengthText = (s: number) => {
+        if (s === 0) return "";
+        if (s <= 1) return "Muy Débil";
+        if (s === 2) return "Débil";
+        if (s === 3) return "Media";
+        if (s === 4) return "Segura";
+        return "Muy Segura";
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setFormData((prev) => ({
@@ -262,6 +292,56 @@ export default function Register() {
                                         />
                                     </div>
                                 </div>
+
+                                {/* Barra de Seguridad de Contraseña */}
+                                {formData.password && (
+                                    <div className="animate-fadeIn">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Seguridad: {getStrengthText(strength)}</span>
+                                            <span className="text-[10px] text-gray-400 font-medium">Mín. 8 caracteres</span>
+                                        </div>
+                                        <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden flex gap-0.5">
+                                            {[1, 2, 3, 4, 5].map((idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className="h-full flex-1 transition-all duration-500"
+                                                    style={{
+                                                        backgroundColor: idx <= strength ? getStrengthColor(strength) : "#F3F4F6",
+                                                        opacity: idx <= strength ? 1 : 0.3
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+
+                                        {/* Ejemplo y Tips */}
+                                        <div className="mt-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100/50">
+                                            <p className="text-[11px] text-[#004A8D] font-medium mb-1 flex items-center gap-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clipRule="evenodd" />
+                                                </svg>
+                                                Ejemplo de contraseña segura:
+                                            </p>
+                                            <code className="text-[11px] bg-white px-2 py-1 rounded border border-blue-200 text-gray-700 block w-fit font-mono">
+                                                CuN€mo.2026!
+                                            </code>
+                                            <ul className="mt-2 space-y-1">
+                                                <li className="text-[10px] text-gray-500 flex items-center gap-1">
+                                                    <div className={`w-1 h-1 rounded-full ${formData.password.length >= 8 ? 'bg-green-500' : 'bg-gray-300'}`} /> Mínimo 8 caracteres
+                                                </li>
+                                                <li className="text-[10px] text-gray-500 flex items-center gap-1">
+                                                    <div className={`w-1 h-1 rounded-full ${/[A-Z]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`} /> Incluir Mayúsculas (A)
+                                                </li>
+                                                <li className="text-[10px] text-gray-500 flex items-center gap-1">
+                                                    <div className={`w-1 h-1 rounded-full ${/[0-9]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`} /> Incluir Números (1)
+                                                </li>
+                                                <li className="text-[10px] text-gray-500 flex items-center gap-1">
+                                                    <div className={`w-1 h-1 rounded-full ${/[^A-Za-z0-9]/.test(formData.password) ? 'bg-green-500' : 'bg-gray-300'}`} /> Símbolos (!@#)
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <button
                                     type="button"
                                     onClick={nextStep}
