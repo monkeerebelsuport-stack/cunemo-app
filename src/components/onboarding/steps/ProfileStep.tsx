@@ -76,19 +76,31 @@ export default function ProfileStep({ data, updateData, onNext }: ProfileStepPro
                     <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                         <Coins size={16} className="text-[#00AEEF]" /> Tu moneda principal
                     </label>
-                    <div className="flex gap-4">
-                        {["USD", "EUR", "MXN"].map((curr) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {[
+                            { code: "USD", label: "USD (EUA/SV)" },
+                            { code: "CAD", label: "CAD (Canadá)" },
+                            { code: "MXN", label: "MXN (México)" },
+                            { code: "COP", label: "COP (Col)" },
+                            { code: "CLP", label: "CLP (Chile)" },
+                            { code: "PEN", label: "PEN (Perú)" },
+                            { code: "VES", label: "VES (Ven)" },
+                            { code: "HNL", label: "HNL (Hon)" },
+                            { code: "EUR", label: "EUR (Europa)" },
+                        ].map((curr) => (
                             <button
-                                key={curr}
-                                onClick={() => handleChange("currency", curr)}
+                                key={curr.code}
+                                type="button"
+                                onClick={() => handleChange("currency", curr.code)}
                                 className={`
-                            flex-1 px-4 py-3 rounded-xl border text-sm font-bold transition-all
-                            ${data.currency === curr
+                                    px-3 py-2.5 rounded-xl border text-[11px] font-bold transition-all flex flex-col items-center justify-center gap-1
+                                    ${data.currency === curr.code
                                         ? "border-[#8DC63F] bg-green-50 text-[#004A8D] shadow-sm ring-1 ring-[#8DC63F]"
-                                        : "border-gray-200 hover:border-gray-300 text-gray-500"}
-                        `}
+                                        : "border-gray-200 hover:border-gray-300 text-gray-500 bg-white"}
+                                `}
                             >
-                                {curr}
+                                <span>{curr.code}</span>
+                                <span className="text-[9px] opacity-60 font-medium">{curr.label.split(' ')[1] || ""}</span>
                             </button>
                         ))}
                     </div>
