@@ -57,9 +57,13 @@ export async function POST(request: Request) {
             message: 'Instancia lista para escaneo'
         });
 
-    } catch (err) {
+    } catch (err: any) {
         console.error('Error creating WhatsApp instance:', err);
-        return NextResponse.json({ error: 'Failed to create instance' }, { status: 500 });
+        return NextResponse.json({
+            error: 'Failed to create instance',
+            details: err.message || 'Unknown error',
+            code: err.code || 'UNKNOWN'
+        }, { status: 500 });
     }
 }
 
