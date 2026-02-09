@@ -1,17 +1,61 @@
 "use client";
 
 import { useState } from "react";
-import { Zap, CheckCircle, Code, Info, ArrowLeft } from "lucide-react";
+import { Zap, CheckCircle, Code, Info, ArrowLeft, Smartphone, ShieldCheck } from "lucide-react";
+import WhatsAppQR from "./WhatsAppQR";
+import WhatsAppManager from "./WhatsAppManager";
+import { supabase } from "@/lib/supabase";
+import { useEffect } from "react";
 
 interface WhatsAppIntegrationProps {
     onBack: () => void;
 }
 
 export default function WhatsAppIntegration({ onBack }: WhatsAppIntegrationProps) {
-    const [mode, setMode] = useState<"select" | "byok" | "managed">("select");
+    const [mode, setMode] = useState<"select" | "qr" | "managed" | "active">("select");
+    const [activeInstance, setActiveInstance] = useState<any>(null);
 
-    const handleSelectMode = (newMode: "byok" | "managed") => {
+    useEffect(() => {
+        checkIntegrationStatus();
+    }, []);
+
+    const checkIntegrationStatus = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data } = await supabase
+            .from('integrations')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('provider', 'whatsapp')
+            .single();
+
+        if (data && data.settings?.type === 'unofficial') {
+            setActiveInstance(data);
+            setMode("active");
+        }
+    };
+
+    const handleSelectMode = (newMode: "qr" | "managed") => {
         setMode(newMode);
+    };
+
+    const handleConnectionSuccess = () => {
+        checkIntegrationStatus();
+    };
+
+    const handleDisconnect = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        await supabase
+            .from('integrations')
+            .delete()
+            .eq('user_id', user.id)
+            .eq('provider', 'whatsapp');
+
+        setMode("select");
+        setActiveInstance(null);
     };
 
     return (
@@ -32,31 +76,31 @@ export default function WhatsAppIntegration({ onBack }: WhatsAppIntegrationProps
 
             {mode === "select" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Opción BYOK */}
+                    {/* Opción Unofficial (QR) */}
                     <div
-                        onClick={() => handleSelectMode("byok")}
+                        onClick={() => handleSelectMode("qr")}
                         className="bg-white p-8 rounded-3xl border-2 border-gray-100 hover:border-blue-200 cursor-pointer transition-all hover:shadow-xl group"
                     >
                         <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <Code size={28} />
+                            <Smartphone size={28} />
                         </div>
-                        <h3 className="text-xl font-bold text-gray-800 mb-2">Trae tu propia API</h3>
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">Conexión QR (No Oficial)</h3>
                         <p className="text-sm text-gray-500 leading-relaxed mb-6">
-                            Si ya tienes una cuenta de Desarrollador en Meta o usas un bot propio. Conecta CunemoClient sin cargos adicionales de nuestra parte.
+                            La forma más rápida de empezar. Escanea un código QR como en WhatsApp Web. Sin costos de Meta y configuración instantánea.
                         </p>
                         <ul className="space-y-3 mb-8">
                             <li className="flex items-center gap-2 text-xs text-gray-600">
-                                <CheckCircle size={14} className="text-green-500" /> Control total de tus llaves
+                                <CheckCircle size={14} className="text-green-500" /> Cero configuración técnica
                             </li>
                             <li className="flex items-center gap-2 text-xs text-gray-600">
-                                <CheckCircle size={14} className="text-green-500" /> Pagas directo a Meta
+                                <CheckCircle size={14} className="text-green-500" /> Sin cargos por mensaje
                             </li>
                             <li className="flex items-center gap-2 text-xs text-gray-600">
-                                <CheckCircle size={14} className="text-green-500" /> Sin costo por integración
+                                <CheckCircle size={14} className="text-green-500" /> Sincronización inmediata
                             </li>
                         </ul>
                         <button className="w-full py-3 bg-gray-50 text-gray-600 font-bold rounded-xl group-hover:bg-[#00AEEF] group-hover:text-white transition-colors">
-                            Configurar manualmente
+                            Vincular vía QR
                         </button>
                     </div>
 
@@ -98,54 +142,15 @@ export default function WhatsAppIntegration({ onBack }: WhatsAppIntegrationProps
                 </div>
             )}
 
-            {mode === "byok" && (
-                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8 animate-fadeIn">
-                    <div className="flex items-start gap-4 p-4 bg-orange-50 rounded-2xl border border-orange-100 text-orange-800">
-                        <Info size={20} className="shrink-0 mt-1" />
-                        <div className="text-xs space-y-1">
-                            <p className="font-bold">Requiere cuenta de Meta for Developers</p>
-                            <p className="opacity-80">Necesitarás tu App ID, ID de Teléfono y un Token de Acceso Permanente.</p>
-                        </div>
-                    </div>
-
-                    <form className="space-y-6 max-w-lg">
-                        <div className="grid grid-cols-1 gap-6">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Phone Number ID</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ej: 10593452243..."
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#00AEEF] text-sm"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">WhatsApp Business Account ID</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ej: 114322522..."
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#00AEEF] text-sm"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Permanent Access Token</label>
-                                <textarea
-                                    rows={3}
-                                    placeholder="Pega aquí tu token permanente..."
-                                    className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#00AEEF] text-sm"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="pt-4 flex items-center gap-4">
-                            <button className="btn-primary px-8">Guardar y Vincular</button>
-                            <button
-                                onClick={() => setMode("select")}
-                                className="text-xs font-bold text-gray-400 hover:text-gray-600 px-4 py-2"
-                            >
-                                Cancelar
-                            </button>
-                        </div>
-                    </form>
+            {mode === "qr" && (
+                <div className="space-y-6">
+                    <button
+                        onClick={() => setMode("select")}
+                        className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
+                    >
+                        <ArrowLeft size={14} /> Volver a opciones
+                    </button>
+                    <WhatsAppQR onSuccess={handleConnectionSuccess} />
                 </div>
             )}
 
@@ -186,6 +191,14 @@ export default function WhatsAppIntegration({ onBack }: WhatsAppIntegrationProps
                         </div>
                     </div>
                 </div>
+            )}
+
+            {mode === "active" && activeInstance && (
+                <WhatsAppManager
+                    instanceName={activeInstance.settings?.instance_name || "Cunemo_Instance"}
+                    status="connected"
+                    onDisconnect={handleDisconnect}
+                />
             )}
         </div>
     );
