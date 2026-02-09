@@ -23,6 +23,7 @@ export default function Register() {
     });
     const [error, setError] = useState<string | null>(null);
     const [showUserExistsModal, setShowUserExistsModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const getPasswordStrength = (password: string) => {
         if (!password) return 0;
@@ -202,8 +203,7 @@ export default function Register() {
 
             if (contactError) throw contactError;
 
-            alert("¡Cuenta creada exitosamente! Bienvenido a CunemoClient.");
-            router.push("/");
+            setShowSuccessModal(true);
         } catch (err: any) {
             console.error("Error:", err);
 
@@ -504,6 +504,34 @@ export default function Register() {
                     </div>
                 </div>
             )}
+
+            {/* Modal: Registro Exitoso Profesional */}
+            {showSuccessModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center animate-scaleIn">
+                        <div className="w-20 h-20 bg-green-50 text-[#8DC63F] rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </div>
+
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Bienvenido a CunemoClient!</h2>
+                        <p className="text-gray-600 mb-8">
+                            Tu cuenta ha sido creada exitosamente. Estamos listos para ayudarte a gestionar tus clientes de forma inteligente.
+                        </p>
+
+                        <div className="space-y-3">
+                            <button
+                                onClick={() => router.push("/")}
+                                className="block w-full p-4 bg-[#8DC63F] text-white rounded-xl font-bold hover:bg-[#7AB62F] transition-all shadow-lg shadow-green-900/20"
+                            >
+                                Empezar Ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
