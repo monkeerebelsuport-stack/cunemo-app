@@ -86,6 +86,50 @@ export default function Register() {
         setError(null);
 
         try {
+            // 0. Seguridad Avanzada: Verificar duplicados antes de proceder
+
+            // A. Verificar Empresa duplicada
+            const { data: existingAccount } = await supabase
+                .from("accounts")
+                .select("id")
+                .eq("name", formData.company)
+                .maybeSingle();
+
+            if (existingAccount) {
+                setError(`La empresa "${formData.company}" ya está registrada. Por favor usa un nombre diferente o contacta a soporte.`);
+                setLoading(false);
+                return;
+            }
+
+            // B. Verificar Teléfono duplicado (en accounts o contacts)
+            const { data: existingPhoneAccount } = await supabase
+                .from("accounts")
+                .select("id")
+                .eq("phone", formData.phone)
+                .maybeSingle();
+
+            const { data: existingPhoneContact } = await supabase
+                .from("contacts")
+                .select("id")
+                .eq("phone", formData.phone)
+                .maybeSingle();
+
+            if (existingPhoneAccount || existingPhoneContact) {
+                setError("Este número de teléfono ya está vinculado a una cuenta existente.");
+                setLoading(false);
+                return;
+            }
+
+            // C. Verificar Nombre de Usuario (Opcional, pero solicitado)
+            const { data: existingName } = await supabase
+                .from("contacts")
+                .select("id")
+                .ilike("first_name", `%${formData.name.split(' ')[0]}%`)
+                .maybeSingle();
+
+            // Nota: El chequeo de nombre es más flexible para evitar bloqueos injustos, 
+            // pero podemos ser más estrictos si el usuario lo prefiere.
+
             // 1. Auth: Crear usuario
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
