@@ -527,7 +527,7 @@ export default function Register() {
 
                         <div className="space-y-3">
                             <button
-                                onClick={() => router.push("/")}
+                                onClick={() => router.push("/onboarding")}
                                 className="block w-full p-4 bg-[#8DC63F] text-white rounded-xl font-bold hover:bg-[#7AB62F] transition-all shadow-lg shadow-green-900/20"
                             >
                                 Empezar Ahora

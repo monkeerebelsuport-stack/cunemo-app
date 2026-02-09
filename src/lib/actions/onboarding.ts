@@ -9,6 +9,9 @@ interface OnboardingData {
 }
 
 export async function saveOnboardingData(data: OnboardingData) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("No authenticated user");
+
     try {
 
 
@@ -29,7 +32,8 @@ export async function saveOnboardingData(data: OnboardingData) {
                 .from('accounts')
                 .insert({
                     name: contact.company,
-                    industry: data.industry // Usamos la industria seleccionada en el paso 1
+                    industry: data.industry, // Usamos la industria seleccionada en el paso 1
+                    user_id: user.id // Blindaje: Vínculo explícito
                 })
                 .select()
                 .single();
@@ -47,7 +51,8 @@ export async function saveOnboardingData(data: OnboardingData) {
                 .insert({
                     first_name: contact.name, // Simplificación: asume nombre completo en first_name por ahora o split
                     email: contact.email,
-                    account_id: accountData.id
+                    account_id: accountData.id,
+                    user_id: user.id // Blindaje: Vínculo explícito
                 });
 
             if (contactError) console.error("Error creating contact:", contactError);
@@ -64,7 +69,8 @@ export async function saveOnboardingData(data: OnboardingData) {
                     value: parseFloat(deal.value),
                     probability: parseInt(deal.probability),
                     stage: getStageFromProbability(deal.probability),
-                    account_id: firstAccountId
+                    account_id: firstAccountId,
+                    user_id: user.id // Blindaje: Vínculo explícito
                 });
 
             if (dealError) console.error("Error creating deal:", dealError);
