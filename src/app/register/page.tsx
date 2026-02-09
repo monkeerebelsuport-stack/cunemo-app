@@ -347,7 +347,7 @@ export default function Register() {
                                     onClick={nextStep}
                                     className="btn-primary w-full mt-2"
                                 >
-                                    Continuar
+                                    Continuar →
                                 </button>
                             </div>
                         )}
