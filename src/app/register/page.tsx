@@ -232,7 +232,7 @@ export default function Register() {
                     {/* Header */}
                     <div className="mb-6">
                         <h1 style={{ fontFamily: "Montserrat", fontSize: "2rem", fontWeight: 700, color: "#004A8D" }}>
-                            Crear Cuenta
+                            Crear Cuenta v2.1
                         </h1>
                         <p className="text-gray-500 text-sm mt-1">
                             Paso {step} de 3: {step === 1 ? "Credenciales" : step === 2 ? "Perfil Personal" : "Tu Empresa"}
