@@ -1,0 +1,19 @@
+
+> cunemo-app@0.1.0 lint
+> eslint
+
+
+Oops! Something went wrong! :(
+
+ESLint: 9.39.2
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\EQUIPO\Desktop\CRM\cunemo-app\node_modules\eslint-config-next\core-web-vitals' imported from C:\Users\EQUIPO\Desktop\CRM\cunemo-app\eslint.config.mjs
+Did you mean to import "eslint-config-next/core-web-vitals.js"?
+    at finalizeResolution (node:internal/modules/esm/resolve:274:11)
+    at moduleResolve (node:internal/modules/esm/resolve:859:10)
+    at defaultResolve (node:internal/modules/esm/resolve:983:11)
+    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:783:12)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:707:25)
+    at ModuleLoader.resolve (node:internal/modules/esm/loader:690:38)
+    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:307:38)
+    at ModuleJob._link (node:internal/modules/esm/module_job:183:49)

@@ -1,0 +1,174 @@
+
+> cunemo-app@0.1.0 lint
+> eslint
+
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\activities\page.tsx
+   4:33  warning  'Clock' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+   4:49  warning  'Phone' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+   4:56  warning  'Mail' is defined but never used                                                                                    @typescript-eslint/no-unused-vars
+   4:62  warning  'FileText' is defined but never used                                                                                @typescript-eslint/no-unused-vars
+  13:8   warning  React Hook useEffect has a missing dependency: 'fetchActivities'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\billing\page.tsx
+  3:30  warning  'Crown' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\companies\page.tsx
+  15:8  warning  React Hook useEffect has a missing dependency: 'fetchCompanies'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\contacts\page.tsx
+  16:8  warning  React Hook useEffect has a missing dependency: 'fetchContacts'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\deals\[id]\page.tsx
+  31:8  warning  React Hook useEffect has a missing dependency: 'fetchDeal'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\layout.tsx
+   7:10  warning  'UserCircle' is defined but never used                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  44:33  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\page.tsx
+  14:8  warning  React Hook useEffect has a missing dependency: 'fetchStats'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\settings\page.tsx
+  14:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\dashboard\tickets\page.tsx
+  3:10  warning  'MessageSquare' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\page.tsx
+  34:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\app\register\page.tsx
+  132:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\companies\NewCompanyModal.tsx
+  31:18  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\contacts\NewContactModal.tsx
+  32:18  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\dashboard\NotificationCenter.tsx
+   4:28  warning  'Notification' is defined but never used                                                                               @typescript-eslint/no-unused-vars
+   5:35  warning  'CheckCircle' is defined but never used                                                                                @typescript-eslint/no-unused-vars
+  18:8   warning  React Hook useEffect has a missing dependency: 'fetchNotifications'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\integrations\ComingSoonIntegration.tsx
+  7:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\integrations\EmailIntegration.tsx
+   4:10  warning  'Mail' is defined but never used          @typescript-eslint/no-unused-vars
+  47:23  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\integrations\GoogleCalendarIntegration.tsx
+  33:27  warning  'error' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\integrations\WhatsAppIntegration.tsx
+   4:10  warning  'MessageSquare' is defined but never used        @typescript-eslint/no-unused-vars
+   4:25  warning  'Shield' is defined but never used               @typescript-eslint/no-unused-vars
+   4:57  warning  'Smartphone' is defined but never used           @typescript-eslint/no-unused-vars
+   4:75  warning  'Loader2' is defined but never used              @typescript-eslint/no-unused-vars
+  12:12  warning  'loading' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  12:21  warning  'setLoading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  13:12  warning  'status' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  13:20  warning  'setStatus' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\layout\CunemoGuide.tsx
+   3:20  warning  'useEffect' is defined but never used             @typescript-eslint/no-unused-vars
+  40:22  warning  'setMissions' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\onboarding\OnboardingWizard.tsx
+  51:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\onboarding\steps\ContactSeedStep.tsx
+   3:10  warning  'Users' is defined but never used         @typescript-eslint/no-unused-vars
+  12:24  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\onboarding\steps\FirstDealStep.tsx
+  3:18  warning  'ArrowRight' is defined but never used    @typescript-eslint/no-unused-vars
+  6:24  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\onboarding\steps\ProfileStep.tsx
+  6:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  7:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\pipeline\DealCard.tsx
+  2:24  warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\pipeline\KanbanBoard.tsx
+  16:8   warning  React Hook useEffect has a missing dependency: 'fetchDeals'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  36:15  warning  'startCol' is assigned a value but never used                                                                  @typescript-eslint/no-unused-vars
+  37:15  warning  'finishCol' is assigned a value but never used                                                                 @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\pipeline\NewDealModal.tsx
+  21:8   warning  React Hook useEffect has a missing dependency: 'fetchContacts'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  42:18  warning  'err' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\settings\NotificationSettings.tsx
+    5:10  warning  'Bell' is defined but never used          @typescript-eslint/no-unused-vars
+    5:22  warning  'Smartphone' is defined but never used    @typescript-eslint/no-unused-vars
+   38:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:79  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\settings\PipelineSettings.tsx
+  4:27  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\settings\ProfileSettings.tsx
+   49:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   91:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  110:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\components\settings\SecuritySettings.tsx
+    5:58  warning  'AlertCircle' is defined but never used   @typescript-eslint/no-unused-vars
+    5:93  warning  'QrIcon' is defined but never used        @typescript-eslint/no-unused-vars
+   34:54  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   62:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   74:60  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   94:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:18  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+  118:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:48  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  136:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\hooks\useActivities.ts
+  49:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  70:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\hooks\useCompanies.ts
+  36:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\hooks\useContacts.ts
+  47:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  53:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  67:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\hooks\useDeal.ts
+   12:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   57:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   63:69  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   73:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  106:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:45  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  131:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  134:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\hooks\usePipeline.ts
+   60:32  error    Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+   74:68  error    Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+   95:23  error    Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  113:23  error    Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+  120:60  warning  'index' is defined but never used                @typescript-eslint/no-unused-vars
+  122:15  warning  'startCol' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  123:15  warning  'finishCol' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  126:15  warning  'newColumns' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  214:53  error    Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+C:\Users\EQUIPO\Desktop\CRM\cunemo-app\src\lib\actions\onboarding.ts
+  3:48  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 95 problems (46 errors, 49 warnings)
+
