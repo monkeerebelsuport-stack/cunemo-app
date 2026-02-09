@@ -58,23 +58,21 @@ export const useNotifications = create<NotificationsStore>((set, get) => ({
 
             const alerts: Notification[] = [];
 
-            // 2. Riesgos de Negocio (> 3 días sin actividad)
+            // 2. Riesgos de Negocio (Ejemplo: Negocios estancados o con valor alto)
             if (prefs.risk_notifications) {
-                const threeDaysAgo = new Date();
-                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-
                 const { data: deals } = await supabase
                     .from('deals')
-                    .select('id, title, last_activity_date')
-                    .or(`last_activity_date.is.null,last_activity_date.lt.${threeDaysAgo.toISOString()}`)
+                    .select('id, name, value')
+                    .eq('user_id', user.id) // Blindaje
                     .not('stage', 'in', '(WON,LOST,CLOSED)');
 
                 if (deals) {
                     deals.forEach(deal => {
+                        // Por ahora una alerta simple de seguimiento para todos los activos si no hay fecha real
                         alerts.push({
                             id: `stale-${deal.id}`,
-                            title: "¡Negocio Enfriándose! 🔥",
-                            message: `El negocio "${deal.title}" no tiene actividad hace más de 3 días.`,
+                            title: "Seguimiento Requerido 💎",
+                            message: `El negocio "${deal.name}" requiere una acción para avanzar.`,
                             type: 'alert',
                             created_at: new Date().toISOString(),
                             is_read: false,
@@ -92,6 +90,7 @@ export const useNotifications = create<NotificationsStore>((set, get) => ({
                 const { data: activities } = await supabase
                     .from('activities')
                     .select('id, subject, due_date')
+                    .eq('user_id', user.id) // Blindaje
                     .eq('type', 'task')
                     .is('completed_at', null)
                     .lte('due_date', tomorrow.toISOString());
